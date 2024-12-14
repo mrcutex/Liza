@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio with AI Animation</title>
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      color: white;
+      background: linear-gradient(-45deg, #0d1117, #1e222a, #24292f, #0d1117);
+      background-size: 400% 400%;
+      animation: gradientAnimation 20s ease infinite;
+    }
+    canvas {
+      display: block;
+    }
+    .glass-effect {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      max-width: 800px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(5px); /* Subtle Blur Effect */
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      z-index: 5;
+    }
+    .glass-effect h1 {
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px #0088ff;
+    }
+    .glass-effect p {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+    .portfolio-section {
+      margin-top: 30px;
+    }
+    .portfolio-section h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+    .portfolio-section .item {
+      margin: 10px 0;
+      font-size: 1rem;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    }
+    @keyframes gradientAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Glass Effect Content -->
+  <div class="glass-effect">
+    <h1>Hi, I'm Liza lovv</h1>
+    <p>Welcome to my portfolio. Explore my work and get inspired.</p>
+
+    <!-- Portfolio Section -->
+    <div class="portfolio-section">
+      <h2>My Projects</h2>
+      <div class="item">- Dialog Maker</div>
+      <div class="item">- Interactive Portfolio</div>
+      <div class="item">- Mobile App Designs</div>
+      <div class="item">- Tech Related Projects</div>
+    </div>
+  </div>
+
+  <!-- Canvas for Shapes -->
+  <canvas></canvas>
+
+  <!-- Music Player -->
+  <audio id="bg-music" autoplay loop>
+    <source src="https://drive.google.com/uc?export=download&id=17uRtp-ka2I4IuHXkPXUh7Mh8406rR_kr" type="audio/mpeg">
+    Your browser does not support the audio tag.
+  </audio>
+
+  <script>
+    const canvas = document.querySelector("canvas");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let shapes = [];
+    const width = canvas.width;
+    const height = canvas.height;
+
+    // Shape Class
+    class Shape {
+      constructor(x, y, size, color, speed) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.color = color;
+        this.speed = speed;
+        this.angle = Math.random() * Math.PI * 2;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        ctx.closePath();
+      }
+      update() {
+        this.angle += this.speed;
+        this.x += Math.cos(this.angle) * this.speed * 20;
+        this.y += Math.sin(this.angle) * this.speed * 20;
+
+        if (this.x < 0 || this.x > width) this.angle = Math.PI - this.angle;
+        if (this.y < 0 || this.y > height) this.angle = -this.angle;
+      }
+    }
+
+    // Generate Shapes
+    function initShapes() {
+      for (let i = 0; i < 50; i++) {
+        const size = Math.random() * 20 + 10;
+        const x = Math.random() * width;
+        const y = Math.random() * height;
+        const speed = Math.random() * 0.05 + 0.01;
+        const color = `hsl(${Math.random() * 360}, 80%, 70%)`;
+        shapes.push(new Shape(x, y, size, color, speed));
+      }
+    }
+
+    // Animation Loop
+    function animate() {
+      ctx.fillStyle = "rgba(13, 17, 23, 0.1)"; // Trail Effect
+      ctx.fillRect(0, 0, width, height);
+      shapes.forEach((shape) => {
+        shape.update();
+        shape.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    // Create Shape on Touch/Click
+    function createShape(x, y) {
+      const size = Math.random() * 20 + 10;
+      const speed = Math.random() * 0.05 + 0.01;
+      const color = `hsl(${Math.random() * 360}, 80%, 70%)`;
+      shapes.push(new Shape(x, y, size, color, speed));
+    }
+
+    canvas.addEventListener("touchstart", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.touches[0].clientX - rect.left;
+      const y = e.touches[0].clientY - rect.top;
+      createShape(x, y);
+    });
+
+    canvas.addEventListener("click", (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      createShape(x, y);
+    });
+
+    // Initialize
+    initShapes();
+    animate();
+  </script>
+</body>
+</html>
