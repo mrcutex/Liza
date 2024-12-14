@@ -86,10 +86,27 @@
   <canvas></canvas>
 
   <!-- Music Player -->
-  <audio controls loop autoplay muted>
+  <audio id="bg-music" loop muted>
   <source src="prem.mp3" type="audio/mpeg">
   Your browser does not support the audio tag.
 </audio>
+
+<script>
+  window.onload = function() {
+    var audio = document.getElementById('bg-music');
+    
+    // Try to play the audio immediately after the page loads
+    audio.play().then(function() {
+      // Once the audio starts playing, unmute it
+      audio.muted = false; 
+    }).catch(function(error) {
+      // If autoplay fails, log the error (browser restriction)
+      console.log("Autoplay failed, muted audio playing:", error);
+      // Fallback: Play muted
+      audio.play();
+    });
+  };
+</script>
 
   <script>
     const canvas = document.querySelector("canvas");
