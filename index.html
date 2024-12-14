@@ -86,17 +86,10 @@
   <canvas></canvas>
 
   <!-- Music Player -->
-  <audio id="bg-music" controls loop>
+  <audio controls loop autoplay muted>
   <source src="prem.mp3" type="audio/mpeg">
   Your browser does not support the audio tag.
 </audio>
-
-<script>
-  document.addEventListener('DOMContentLoaded', (event) => {
-    const audio = document.getElementById('bg-music');
-    audio.play();
-  });
-</script>
 
   <script>
     const canvas = document.querySelector("canvas");
