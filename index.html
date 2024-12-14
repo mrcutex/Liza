@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Portfolio</title>
   <style>
     /* Reset and Base Styles */
@@ -21,6 +21,9 @@
     canvas {
       display: block;
     }
+  
+  
+  
     .glass-effect {
       position: absolute;
       top: 50%;
@@ -66,9 +69,13 @@
     }
   </style>
 </head>
-<body>
+<body id="start-audio">
   <!-- Glass Effect Content -->
   <div class="glass-effect">
+    
+      <img src="dp.png" alt="Animated Image" width="130" height="130"class="animated-image">
+
+    
     <h1>Hi, I'm Liza lovv</h1>
     <p>Welcome to my portfolio. Explore my work and get inspired.</p>
 
@@ -85,27 +92,22 @@
   <!-- Canvas for Shapes -->
   <canvas></canvas>
 
-  <!-- Music Player -->
-  <audio id="bg-music" loop muted>
+
+<audio id="bg-music" loop muted>
   <source src="prem.mp3" type="audio/mpeg">
   Your browser does not support the audio tag.
 </audio>
 
 <script>
-  window.onload = function() {
+  document.getElementById('start-audio').addEventListener('click', function() {
     var audio = document.getElementById('bg-music');
-    
-    // Try to play the audio immediately after the page loads
     audio.play().then(function() {
-      // Once the audio starts playing, unmute it
-      audio.muted = false; 
+      audio.muted = false;  // Unmute after playing starts
+      audio.volume = 0.05;    // Set volume to 10%
     }).catch(function(error) {
-      // If autoplay fails, log the error (browser restriction)
-      console.log("Autoplay failed, muted audio playing:", error);
-      // Fallback: Play muted
-      audio.play();
+      console.log("Error starting audio:", error);
     });
-  };
+  });
 </script>
 
   <script>
